@@ -64,6 +64,10 @@ const response = await fetch(`/users/${_id}`, {method: 'DELETE'});
 The response from the database will be sent through the 'response' varible and the status can be verified to ensure it was successful
 
 
+UML Diagram
+![image](https://github.com/chambbri/user_database/assets/81598075/7ca9493b-59c4-4dde-977e-b53a70794d31)
+
+
 
 
 
