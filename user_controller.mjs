@@ -19,7 +19,7 @@ app.use('/', express.static(path.join(__dirname, 'static')))
 const PORT = 3001;
 
 // For user registration
-app.post("/user_registration", async (req, res) => {
+app.post("/users", async (req, res) => {
     // obtain values to verify required ones are entered and password for hashing
     const plainTextPassword = req.body.password;
     const username = req.body.username;
@@ -67,6 +67,49 @@ app.post("/user_login", async (req, res) => {
     }
 });
 
+app.put("/users/:_id", (req, res) => {
+    User.replaceUser(req.params._id, req.body.username, req.body.password, req.body.fname, 
+        req.body.lname, req.body.email, req.body.phone)
+        .then(modifiedCount => {
+            if (modifiedCount === 1){
+                res.json({ _id: req.params._id, username: req.body.username, password: req.body.password, 
+                    fname: req.body.fname, lname: req.body.lname, email: req.body.email, phone: req.body.phone });
+
+            } 
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({Error: 'Request Failed'});
+        });
+});
+
+app.get("/users", (req, res) => {
+    const filter = [req.query];
+    User.findUser(filter, '', 0)
+        .then(user => {
+            res.send(user);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({Error: 'Request Failed'});
+        });
+
+});
+
+
+app.delete("/users/:_id", (req, res) => {
+    User.deleteUser(req.params._id)
+        .then(deletedCount => {
+            if (deletedCount === 1){
+                console.log("deleted")
+                res.status(204).send();
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({Error: 'Request Failed'});
+        });
+});
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);

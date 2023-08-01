@@ -30,7 +30,7 @@
                 const email = document.getElementById('email').value
                 const phone = document.getElementById('phone').value
 
-				const result = await fetch('/user_registration', {
+				const result = await fetch('/users', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'

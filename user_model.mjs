@@ -51,4 +51,27 @@ const verifyUser = async (userName, password) => {
 	return false
 }
 
-export {createUser, verifyUser};
+const replaceUser = async (_id, userName, password, userFName, userLName, email, phone) => {
+    const result = await User.updateOne({ _id: _id },
+        { userName: userName, password: password, userFName:userFName, userLName: userLName, email: email, phone: phone });
+    return result.modifiedCount;
+}
+
+const findUser = async (filters, projection, limit) => {
+    const query = User.find()
+        .select(projection)
+        .limit(limit);
+    if(filters.length > 0){
+      query.and(filters);
+    }
+    return query.exec();
+}
+
+const deleteUser = async (id) => {
+    const result = await User.deleteOne({ _id: id });
+    // Return the count of deleted document.
+    return result.deletedCount;
+}
+
+
+export {createUser, verifyUser, replaceUser, findUser, deleteUser};
